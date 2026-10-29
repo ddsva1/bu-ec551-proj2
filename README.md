@@ -35,7 +35,14 @@ Q = B * Z
 [TO DO]
 
 ## Running on the FPGA
-[TO DO]
+*Code reused/adapted from https://github.com/ddsva1/bu-ec551-proj1*
+1. Generate the Verilog: [TO DO]
+2. In Vivado: **Create Project → RTL Project**, then choose the Nexys 4 DDR part:
+   `xc7a100tcsg324-1`.
+3. Add design source: [TO DO] and the board
+   wrapper `fpga/top_nexys4ddr.v`.
+4. Add the constraints: `fpga/Nexys4DDR_Master.xdc`.
+5. Generate Bitstream → Open Hardware Manager → Program Device.
 
 ## Testing
 [TO DO]
