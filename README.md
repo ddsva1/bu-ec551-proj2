@@ -12,10 +12,10 @@ EC551 Programming Assignment 2 (Fall 2026); a tool that:
 
 ## Input Format
 Reads from a text file containing a series of equations, one equation per line.
-Each equation consists of two arguments using either addition (+), multiplication (*), or subtraction (-).
+Each equation consists of two arguments using either addition (+), multiplication (\*), or subtraction (-).
 Accepts no more than 20 lines of equations. 
 No results/partial results that evaluate to negative numbers.
-Each argument and +-* symbol in line separated by a space.
+Each argument and +-\* symbol in line separated by a space.
 
 Example provided:
 ```
