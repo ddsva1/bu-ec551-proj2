@@ -1,0 +1,4 @@
+X = A + A 
+Y = X + A 
+Z = X - B 
+Y = B * Z 
