@@ -1,1 +1,0 @@
-look at NetworkX, Hamilton as potential useful libraries
