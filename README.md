@@ -50,5 +50,20 @@ Q = B * Z
 ### Testdata Usage
 [TO DO]
 
+| Case Tested | Command |
+|---|---|
+|Provided Case|provided.txt|
+|Minimal Cases|1.txt|
+|Maximal Cases||
+
+### xTestdata Usage
+[TO DO]
+
+|Common Errors|Error Detection Proof|Handling Method|
+|---|---|---|
+|Equations entered without spaces|x1.blif|Produces correct outputs|
+
+
+
 ## AI Usage
 [TO DO]
