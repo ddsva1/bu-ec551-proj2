@@ -51,7 +51,7 @@ def form_ssa(equations):
             else:
                     new_rhs_tokens.append(token)
                     
-        new_rhs = "".join(new_rhs_tokens)
+        new_rhs = " ".join(new_rhs_tokens)
 
         # 2. LHS: assign a new version number, bc this value is getting updated
         current_version = version_counts.get(lhs, -1) + 1
@@ -59,7 +59,7 @@ def form_ssa(equations):
         new_lhs = f"{lhs}_{current_version}"
         var_map[lhs] = new_lhs
 
-        ssa_equations.append(f"{new_lhs}={new_rhs}")
+        ssa_equations.append(f"{new_lhs} = {new_rhs}")
     print("SSA version:",ssa_equations)
     return [ssa_equations, var_map]
 
