@@ -1,10 +1,23 @@
 #imports
 import sys
 import re
+from pathlib import Path
 
 #help functions
+
+def get_file_equ(filename):
+    print ("Getting equations from",filename)
+    equs=[]
+    print("Equations in file:")
+    with open(filename, 'r') as file:
+        for line in file:
+            print(line.replace("\n", ""))
+            equs.append(line.replace("\n", "").replace(" ",""))
+    print("Parsed Equations:",equs)
+    return equs
+
 def form_ssa(equations):
-    print(equations)
+    print("Turning Equations into SSA Format")
 
     version_counts = {}  # Tracks the current version number for each variable name
     var_map = {}         # Maps base variable name to its latest SSA version in scope
@@ -19,7 +32,7 @@ def form_ssa(equations):
         lhs, rhs = map(str.strip, eq.split("="))
         
         # replace any variable usage with its latest SSA version
-        
+
         # We tokenize by spaces/operators to find variable names
         tokens = re.split(r'([+\-*/()\s])', rhs)
         new_rhs_tokens = []
@@ -47,20 +60,19 @@ def form_ssa(equations):
         var_map[lhs] = new_lhs
 
         ssa_equations.append(f"{new_lhs}={new_rhs}")
-
+    print("SSA version:",ssa_equations)
     return [ssa_equations, var_map]
 
+def ssa_file(equations,filename):
+    print("Outputting file with SSA-formatted Equations")
+    print("File Location: output/"+filename)
+    print(equations)
 
-def get_file_equ(filename):
-    print ("Getting equations from",filename)
-    equs=[]
-    print("Equations in file:")
-    with open(filename, 'r') as file:
-        for line in file:
-            equs.append(line.replace("\n", "").replace(" ",""))
-    print(equs)
-    return equs
-    
+    folder_path = Path("output")
+    file_path = folder_path / filename[9:]
+    with open(file_path, "w") as f:
+        for item in equations:
+            f.write(item+"\n")
 
 
 #the big called function
@@ -70,6 +82,10 @@ def main():
     equs = get_file_equ(filename)
     print("-----------------------------------------")
     ssa = form_ssa(equs)
-    print(ssa)
-
+    print("-----------------------------------------")
+    if "-mf" in sys.argv:
+        ssa_file(ssa[0], filename)
+    else:
+        print("No -mf tag, not making SSA output file")
+    print("-----------------------------------------")
 main()
