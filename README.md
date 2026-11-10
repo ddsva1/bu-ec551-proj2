@@ -74,8 +74,9 @@ bu-ec551-proj2/
 | Case Tested | Command |
 |---|---|
 |Provided Case|provided.txt|
-|Minimal Cases|1.txt|
-|Maximal Cases||
+|Minimal Cases|1.txt, 2.txt|
+|Maximal Cases|3.txt, 4.txt, 5.txt|
+|Error Handling Cases|x1.txt|
 
 
 ## AI Usage
