@@ -3,6 +3,9 @@ import sys
 import re
 from pathlib import Path
 
+#imports from this project
+from make_v import make_v
+
 #help functions
 
 def get_file_equ(filename):
@@ -88,6 +91,7 @@ def main():
     else:
         print("No -mf tag, not making SSA output file")
     print("-----------------------------------------")
+    make_v(ssa)
 
 if __name__ == "__main__":
     main()

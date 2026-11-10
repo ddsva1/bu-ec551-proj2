@@ -2,7 +2,7 @@ import sys
 
 x = sys.argv[1]
 
-with open(f"verilog-gen/ivadd{x}.v", "w") as f:
+with open(f"verilog-mod/ivadd{x}.v", "w") as f:
 
     f.writelines("module add4 (\n")
     f.writelines("input ["+x+":0] inA,\n")
