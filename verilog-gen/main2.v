@@ -10,6 +10,7 @@ output reg C_1,
 output reg A_2,
 output reg D_0
 );
+wire A_1;
 
 
 

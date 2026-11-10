@@ -44,8 +44,16 @@ def get_outputs(ssa):
 def get_temps(ssa, inputs, outputs):
     print("Making Verilog File: Internal Connections")
     temps = []
-    print(ssa[0])
-    print(ssa[1])
+    print("Inputs:",inputs)
+    print("Outputs:",outputs)
+    for item in ssa[1]:
+        count = 0
+        while (str(item)+"_"+str(count) != ssa[1][item]):  
+            #print(item+"_"+str(count))
+            if count != 0:
+                temps.append(item+"_"+str(count))
+            count=count+1
+    print("Internals:",temps)
     return temps
 
 def make_v (ssa):
@@ -64,14 +72,17 @@ def make_v (ssa):
 
         f.writelines("module "+modulename+" (\n")
 
+        print("Adding Inputs")
         f.writelines("input "+inputs[0])#add input variable names
         count = 1
+        
         while count<len(inputs):
             f.writelines(",\ninput "+inputs[count])
             count=count+1
 
         f.writelines("\n")
 
+        print("Adding Outputs")
         f.writelines("output reg "+outputs[0])#add output variable names
         count = 1
         while count<len(outputs):
@@ -79,8 +90,14 @@ def make_v (ssa):
             count=count+1
 
         f.writelines("\n);\n")
+        print("Adding Temporary Connections")
+        count = 0
+        while count<len(temps):
+            f.writelines("wire "+temps[count]+";\n")
+            count=count+1
         f.writelines("\n")#add temp variable names
         f.writelines("\n")
+        print("Adding Called Modules [todo]")
         f.writelines("\n")#instantiate module for each element in ssa[0]
         f.writelines("\n")
         f.writelines("endmodule\n")
