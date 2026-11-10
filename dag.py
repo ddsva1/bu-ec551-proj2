@@ -78,7 +78,6 @@ class DAG:
 
         self.preds = {o.id: [] for o in self.ops}
         self.succs = {o.id: [] for o in self.ops}
-        self.edges = []           # (from_op, to_op, value)
         self.inputs = []          # primary inputs (read but never written)
         self.constants = []       # integer constants used as operands
         self.consumers = {}       # value name -> list of op ids reading it
@@ -100,32 +99,12 @@ class DAG:
                     if p not in self.preds[o.id]:
                         self.preds[o.id].append(p)
                         self.succs[p].append(o.id)
-                        self.edges.append((p, o.id, operand))
                 elif operand not in self.inputs:
                     self.inputs.append(operand)
 
         # outputs: the final version of every variable that is assigned somewhere
         finals = {v for v in var_map.values() if v in self.producer}
         self.outputs = [o.dest for o in self.ops if o.dest in finals]
-
-    def evaluate(self, input_values, width):
-        """Reference model: {value: result} for every SSA value, modulo 2**width."""
-        mask = (1 << width) - 1
-        env = {k: v & mask for k, v in input_values.items()}
-
-        def val(x):
-            return x & mask if isinstance(x, int) else env[x]
-
-        for o in self.ops:
-            a, b = val(o.a), val(o.b)
-            if o.op == "add":
-                r = a + b
-            elif o.op == "sub":
-                r = a - b
-            else:
-                r = a * b
-            env[o.dest] = r & mask
-        return env
 
 
 @dataclass
