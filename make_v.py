@@ -257,10 +257,13 @@ def plan_io(dag, dp, hardcoded):
     observability table. Returns (switch_inputs, fixed_inputs, obs, warnings)."""
     mask = (1 << dp.width) - 1
     by_base = {base_name(v): v for v in dag.inputs}
-    for name in hardcoded:
+    for name, val in hardcoded.items():
         if name not in by_base:
             raise HLSError(f"--hardcode {name}: '{name}' is not a primary input "
                            f"(inputs: {', '.join(by_base) or 'none'})")
+        if val > mask:
+            raise HLSError(f"--hardcode {name}={val}: value does not fit in the "
+                           f"{dp.width}-bit datapath (max {mask})")
     free = [v for v in dag.inputs if base_name(v) not in hardcoded]
     switch_inputs = free[:SWITCH_FIELDS]
     fixed = {v: hardcoded.get(base_name(v), DEFAULT_HARDCODE) & mask

@@ -4,6 +4,29 @@ import re
 from pathlib import Path
 
 
+#input format checking
+# every non-blank line must be:  NAME = OPERAND OP OPERAND
+#   NAME     variable: a letter or _ followed by letters, digits, _
+#   OPERAND  variable or non-negative integer constant
+#   OP       + - *
+OPERAND = r"(?:[A-Za-z_]\w*|\d+)"
+EQUATION = re.compile(r"^\s*[A-Za-z_]\w*\s*=\s*" + OPERAND + r"\s*[+\-*]\s*" + OPERAND + r"\s*$", re.ASCII)
+
+
+class SSAFormatError(ValueError):
+    """An input line is not a valid 'X = A op B' equation."""
+
+
+def check_equation(line, line_no):
+    """Raise SSAFormatError if a non-blank line is not 'NAME = OPERAND OP OPERAND'."""
+    if line.strip() == "":
+        return
+    if not EQUATION.match(line):
+        raise SSAFormatError(f"line {line_no}: '{line.strip()}' is not a valid equation; "
+                             f"expected 'X = A op B' with op one of + - * "
+                             f"(operands are variable names or non-negative integers)")
+
+
 #help functions
 
 def get_file_equ(filename):
@@ -11,8 +34,10 @@ def get_file_equ(filename):
     equs=[]
     print("Equations in file:")
     with open(filename, 'r') as file:
-        for line in file:
+        for line_no, line in enumerate(file, start=1):
             print(line.replace("\n", ""))
+            # check the raw line, before spaces are removed, so 'X = A B + C' is caught
+            check_equation(line, line_no)
             equs.append(line.replace("\n", "").replace(" ",""))
     print("Parsed Equations:",equs)
     return equs
@@ -24,10 +49,13 @@ def form_ssa(equations):
     var_map = {}         # Maps base variable name to its latest SSA version in scope
     ssa_equations = []   # Resulting SSA equations
 
-    for eq in equations:
-        # to ignore \n lines
-        if "=" not in eq:
+    for line_no, eq in enumerate(equations, start=1):
+        # to ignore blank lines
+        if eq.strip() == "":
             continue
+        # also checked here so form_ssa never emits a malformed SSA equation,
+        # even when called without get_file_equ
+        check_equation(eq, line_no)
 
         #splits data into side that writes to memory and side that reads from memory
         lhs, rhs = map(str.strip, eq.split("="))

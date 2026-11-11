@@ -48,12 +48,19 @@ def run_ssa(path):
     """Parts 1-2: reuse the partner's parser and SSA converter unchanged."""
     if not Path(path).is_file():
         raise HLSError(f"input file '{path}' not found")
-    equs = make_ssa.get_file_equ(path)
+    try:
+        equs = make_ssa.get_file_equ(path)
+    except make_ssa.SSAFormatError as e:
+        raise HLSError(str(e))
     n = sum(1 for e in equs if "=" in e)
+    if n == 0:
+        raise HLSError(f"'{path}' contains no equations")
     if n > MAX_LINES:
         print(f"WARNING: {n} equations; the assignment guarantees at most {MAX_LINES}")
     try:
         ssa, var_map = make_ssa.form_ssa(equs)
+    except make_ssa.SSAFormatError as e:
+        raise HLSError(str(e))
     except Exception as e:  # make_ssa raises raw Python errors on malformed lines
         raise HLSError(f"could not convert the equations to SSA ({type(e).__name__}: {e}); "
                        f"check that every line looks like 'X = A + B'")
