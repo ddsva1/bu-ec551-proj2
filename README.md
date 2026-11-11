@@ -8,8 +8,12 @@ EC551 Programming Assignment 2 (Fall 2026); a tool that:
 5. Generates synthesized Verilog RTL (Datapath + Control FSM).
 
 ## Quick Start
-[TO DO]
-
+```
+python hls.py testdata/provided.txt
+python hls.py testdata/provided.txt --schedule casap --adders 1 --muls 1
+python hls.py testdata/provided.txt --schedule custom --latency 4 --export-ssa
+python hls.py testdata/provided.txt --hardcode B=2 --fpga
+```
 ## Input Format
 Reads from a text file containing a series of equations, one equation per line.
 Each equation consists of two arguments using either addition (+), multiplication (\*), or subtraction (-).
@@ -41,13 +45,13 @@ bu-ec551-proj2/
 │   └── scans.pdf             Scanned copies of prepped hand-drawn diagrams (proof of correctness)
 ├── hls.py                    High-level main function, calls all others
 ├── make_ssa.py               parses equations text file, converts to SSA format, optionally creates SSA output
-├── dag.py                    Creates DAG/Datapath from SSA equations
+├── dag.py                    Creates DAG from SSA equations
 ├── datapath.py               Creates Datapath using DAG, SSA
-├── verilog_gen/              basic block Verilog generation files (v*.py), default verilog block files (v*.v), program-created verilog files (iv*.v)
+├── verilog_gen/              Program-generated output files
 │   └── verilog outputs       Folders containing verilog output files used to demonstrate and test outputs
-│       ├── hls_core.v
-│       ├── hls_top.v
-│       └── testbench.v
+│       ├── hls_core.v        FSM (sequencer) driving mux selects and register write enables. Registers at the cycle boundaries, input muxes, and exactly the number of adders/subtractors/multipliers the schedule needs
+│       ├── hls_top.v         top level - button stepping (clock enable), inputs from switches or hardcoded, and the observability mux (which output is shown)
+│       └── testbench.v       self-checking simulation of hls_core and hls_top
 ├── verilog_mod/
 │   ├── adder.v               basic verilog block adder
 │   ├── multiplier.v          basic verilog block multiplier
