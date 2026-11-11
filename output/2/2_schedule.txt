@@ -1,0 +1,20 @@
+Schedule mode : asap
+Latency       : 5 control steps
+Limits        : none
+
+Step 1:
+    op0   A_0 = B_0 - C_0
+    op5   D_0 = E_0 + F_0
+Step 2:
+    op1   B_1 = A_0 + B_0
+Step 3:
+    op2   C_1 = B_1 * A_0
+Step 4:
+    op3   A_1 = C_1 - B_1
+Step 5:
+    op4   A_2 = A_1 + A_1
+
+Functional units required:
+  adder      : 1
+  subtractor : 1
+  multiplier : 1
