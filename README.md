@@ -68,15 +68,15 @@ bu-ec551-proj2/
 5. Generate Bitstream → Open Hardware Manager → Program Device.
 
 ## Testing
-[TO DO]
-[TO DO ALSO: Add test 20 lines long, 1 line long, max variables, min variables]
 
 | Case Tested | Command |
 |---|---|
 |Provided Case|provided.txt|
-|Minimal Cases|1.txt, 2.txt|
+|Small Cases|1.txt, 2.txt|
 |Maximal Cases|3.txt, 4.txt, 5.txt|
-|Error Handling Cases|x1.txt|
+|Block-Test Cases|6.txt, 7.txt, 8.txt|
+|Good example of scheduling|9.txt|
+|Error Handling Case|x1.txt, 4.txt|
 
 
 ## AI Usage
