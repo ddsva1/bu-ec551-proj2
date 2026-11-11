@@ -82,9 +82,10 @@ bu-ec551-proj2/
 ## AI Usage
 [TO COMPLETE]
 
-- No AI used for make_ssa.py
+- No AI used for make_ssa.py seed code
+- No AI used for make_v.py seed code
 - No AI used for test input data creation
-- No AI used for verilog-gen folder
 - No AI used for README file
 
 - AI used for fpga folder (code adapted from project 1)
+- AI used to refactor code, including seed code from above
