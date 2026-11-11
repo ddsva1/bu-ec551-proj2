@@ -1,11 +1,19 @@
-Schedule mode : asap
-Latency       : 1 control steps
+Schedule mode : alap
+Latency       : 3 control steps
 Limits        : none
 
 Step 1:
-    op0   A_0 = B_0 * C_0
+    op3   A_3 = B_0 - C_0
+Step 2:
+    op0   A_0 = B_0 + C_0
+    op4   B_1 = A_3 * B_0
+Step 3:
+    op1   A_1 = D_0 + A_0
+    op2   A_2 = B_0 - D_0
+    op5   D_1 = A_3 + B_1
+    op6   C_1 = B_1 - B_1
 
 Functional units required:
-  adder      : 0
-  subtractor : 0
+  adder      : 2
+  subtractor : 2
   multiplier : 1

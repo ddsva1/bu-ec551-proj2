@@ -8,7 +8,8 @@ module hls_controller (
     output reg [2:0] state,
     output reg done,
     output reg sel_add0_a,
-    output reg [1:0] sel_r0,
+    output reg sel_r0,
+    output reg sel_r1,
     output reg we_r0,
     output reg we_r1,
     output reg we_r2,
@@ -37,7 +38,8 @@ module hls_controller (
     always @(*) begin
         done = 1'b0;
         sel_add0_a = 1'd0;
-        sel_r0 = 2'd0;
+        sel_r0 = 1'd0;
+        sel_r1 = 1'd0;
         we_r0 = 1'b0;
         we_r1 = 1'b0;
         we_r2 = 1'b0;
@@ -45,8 +47,9 @@ module hls_controller (
         case (state)
             ST_IDLE: if (start) begin   // load the primary inputs
                 we_r0 = 1'b1;
-                sel_r0 = 2'd0;
+                sel_r0 = 1'd0;
                 we_r1 = 1'b1;
+                sel_r1 = 1'd0;
             end
             ST_S1: begin
                 // op0: X_0 = A_0 + A_0  on add0
@@ -54,17 +57,17 @@ module hls_controller (
                 we_r2 = 1'b1;
             end
             ST_S2: begin
-                // op1: Y_0 = X_0 + A_0  on add0
                 // op2: Z_0 = X_0 - B_0  on sub0
-                sel_add0_a = 1'd1;
-                we_r0 = 1'b1;
-                sel_r0 = 2'd1;
                 we_r3 = 1'b1;
             end
             ST_S3: begin
+                // op1: Y_0 = X_0 + A_0  on add0
                 // op3: Y_1 = B_0 * Z_0  on mul0
+                sel_add0_a = 1'd1;
                 we_r0 = 1'b1;
-                sel_r0 = 2'd2;
+                sel_r0 = 1'd1;
+                we_r1 = 1'b1;
+                sel_r1 = 1'd1;
             end
             ST_DONE: begin
                 done = 1'b1;
@@ -98,7 +101,8 @@ module hls_core (
 
     // control signals
     wire sel_add0_a;
-    wire [1:0] sel_r0;
+    wire sel_r0;
+    wire sel_r1;
     wire we_r0;
     wire we_r1;
     wire we_r2;
@@ -113,6 +117,7 @@ module hls_core (
         .done(done),
         .sel_add0_a(sel_add0_a),
         .sel_r0(sel_r0),
+        .sel_r1(sel_r1),
         .we_r0(we_r0),
         .we_r1(we_r1),
         .we_r2(we_r2),
@@ -147,13 +152,17 @@ module hls_core (
     reg [W-1:0] r0_d;
     always @(*)
         case (sel_r0)
-            2'd0: r0_d = in_A;
-            2'd1: r0_d = fu_add0_y;
-            2'd2: r0_d = fu_mul0_y;
+            1'd0: r0_d = in_A;
+            1'd1: r0_d = fu_add0_y;
             default: r0_d = {W{1'b0}};
         endcase
     reg [W-1:0] r1_d;
-    always @(*) r1_d = in_B;
+    always @(*)
+        case (sel_r1)
+            1'd0: r1_d = in_B;
+            1'd1: r1_d = fu_mul0_y;
+            default: r1_d = {W{1'b0}};
+        endcase
     reg [W-1:0] r2_d;
     always @(*) r2_d = fu_add0_y;
     reg [W-1:0] r3_d;
@@ -176,5 +185,5 @@ module hls_core (
     // outputs (valid in state DONE)
     assign out_X = r2;   // X_0
     assign out_Z = r3;   // Z_0
-    assign out_Y = r0;   // Y_1
+    assign out_Y = r1;   // Y_1
 endmodule

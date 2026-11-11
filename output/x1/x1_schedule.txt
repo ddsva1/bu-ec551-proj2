@@ -1,13 +1,13 @@
-Schedule mode : asap
+Schedule mode : alap
 Latency       : 3 control steps
 Limits        : none
 
 Step 1:
     op0   X_0 = A_0 + A_0
 Step 2:
-    op1   Y_0 = X_0 + A_0
     op2   Z_0 = X_0 - B_0
 Step 3:
+    op1   Y_0 = X_0 + A_0
     op3   Y_1 = B_0 * Z_0
 
 Functional units required:
