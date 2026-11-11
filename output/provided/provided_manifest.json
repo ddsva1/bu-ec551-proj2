@@ -1,0 +1,389 @@
+{
+  "width": 8,
+  "fu_interface": {
+    "add": {
+      "module": "adder",
+      "parameter": "W",
+      "inputs": [
+        "a",
+        "b"
+      ],
+      "output": "y"
+    },
+    "sub": {
+      "module": "subtractor",
+      "parameter": "W",
+      "inputs": [
+        "a",
+        "b"
+      ],
+      "output": "y"
+    },
+    "mul": {
+      "module": "multiplier",
+      "parameter": "W",
+      "inputs": [
+        "a",
+        "b"
+      ],
+      "output": "y"
+    }
+  },
+  "inputs": [
+    {
+      "value": "A_0",
+      "port": "in_A",
+      "reg": "r0"
+    },
+    {
+      "value": "B_0",
+      "port": "in_B",
+      "reg": "r1"
+    }
+  ],
+  "outputs": [
+    {
+      "value": "X_0",
+      "port": "out_X",
+      "reg": "r2"
+    },
+    {
+      "value": "Y_0",
+      "port": "out_Y",
+      "reg": "r0"
+    },
+    {
+      "value": "Z_0",
+      "port": "out_Z",
+      "reg": "r3"
+    },
+    {
+      "value": "Q_0",
+      "port": "out_Q",
+      "reg": "r1"
+    }
+  ],
+  "fus": [
+    {
+      "name": "add0",
+      "type": "add",
+      "module": "adder",
+      "port_a": {
+        "sources": [
+          {
+            "kind": "reg",
+            "name": "r0"
+          }
+        ],
+        "sel_signal": null,
+        "sel_width": 0
+      },
+      "port_b": {
+        "sources": [
+          {
+            "kind": "reg",
+            "name": "r1"
+          },
+          {
+            "kind": "reg",
+            "name": "r2"
+          }
+        ],
+        "sel_signal": "sel_add0_b",
+        "sel_width": 1
+      },
+      "output": "add0_y"
+    },
+    {
+      "name": "sub0",
+      "type": "sub",
+      "module": "subtractor",
+      "port_a": {
+        "sources": [
+          {
+            "kind": "reg",
+            "name": "r2"
+          }
+        ],
+        "sel_signal": null,
+        "sel_width": 0
+      },
+      "port_b": {
+        "sources": [
+          {
+            "kind": "reg",
+            "name": "r1"
+          }
+        ],
+        "sel_signal": null,
+        "sel_width": 0
+      },
+      "output": "sub0_y"
+    },
+    {
+      "name": "mul0",
+      "type": "mul",
+      "module": "multiplier",
+      "port_a": {
+        "sources": [
+          {
+            "kind": "reg",
+            "name": "r1"
+          }
+        ],
+        "sel_signal": null,
+        "sel_width": 0
+      },
+      "port_b": {
+        "sources": [
+          {
+            "kind": "reg",
+            "name": "r3"
+          }
+        ],
+        "sel_signal": null,
+        "sel_width": 0
+      },
+      "output": "mul0_y"
+    }
+  ],
+  "registers": [
+    {
+      "name": "r0",
+      "we_signal": "we_r0",
+      "sources": [
+        {
+          "kind": "input",
+          "name": "A_0",
+          "port": "in_A"
+        },
+        {
+          "kind": "fu",
+          "name": "add0"
+        }
+      ],
+      "sel_signal": "sel_r0",
+      "sel_width": 1
+    },
+    {
+      "name": "r1",
+      "we_signal": "we_r1",
+      "sources": [
+        {
+          "kind": "input",
+          "name": "B_0",
+          "port": "in_B"
+        },
+        {
+          "kind": "fu",
+          "name": "mul0"
+        }
+      ],
+      "sel_signal": "sel_r1",
+      "sel_width": 1
+    },
+    {
+      "name": "r2",
+      "we_signal": "we_r2",
+      "sources": [
+        {
+          "kind": "fu",
+          "name": "add0"
+        }
+      ],
+      "sel_signal": null,
+      "sel_width": 0
+    },
+    {
+      "name": "r3",
+      "we_signal": "we_r3",
+      "sources": [
+        {
+          "kind": "fu",
+          "name": "sub0"
+        }
+      ],
+      "sel_signal": null,
+      "sel_width": 0
+    }
+  ],
+  "fsm": {
+    "state_width": 3,
+    "reset_state": "IDLE",
+    "states": [
+      {
+        "name": "IDLE",
+        "code": 0,
+        "fu_sel": {
+          "add0": {
+            "a": null,
+            "b": null
+          },
+          "sub0": {
+            "a": null,
+            "b": null
+          },
+          "mul0": {
+            "a": null,
+            "b": null
+          }
+        },
+        "reg_we": {
+          "r0": 1,
+          "r1": 1,
+          "r2": 0,
+          "r3": 0
+        },
+        "reg_sel": {
+          "r0": 0,
+          "r1": 0,
+          "r2": null,
+          "r3": null
+        },
+        "done": 0,
+        "next": {
+          "start": "S1",
+          "default": "IDLE"
+        },
+        "condition": "register writes happen only when start=1"
+      },
+      {
+        "name": "S1",
+        "code": 1,
+        "fu_sel": {
+          "add0": {
+            "a": 0,
+            "b": 0
+          },
+          "sub0": {
+            "a": null,
+            "b": null
+          },
+          "mul0": {
+            "a": null,
+            "b": null
+          }
+        },
+        "reg_we": {
+          "r0": 0,
+          "r1": 0,
+          "r2": 1,
+          "r3": 0
+        },
+        "reg_sel": {
+          "r0": null,
+          "r1": null,
+          "r2": 0,
+          "r3": null
+        },
+        "done": 0,
+        "next": {
+          "default": "S2"
+        }
+      },
+      {
+        "name": "S2",
+        "code": 2,
+        "fu_sel": {
+          "add0": {
+            "a": 0,
+            "b": 1
+          },
+          "sub0": {
+            "a": 0,
+            "b": 0
+          },
+          "mul0": {
+            "a": null,
+            "b": null
+          }
+        },
+        "reg_we": {
+          "r0": 1,
+          "r1": 0,
+          "r2": 0,
+          "r3": 1
+        },
+        "reg_sel": {
+          "r0": 1,
+          "r1": null,
+          "r2": null,
+          "r3": 0
+        },
+        "done": 0,
+        "next": {
+          "default": "S3"
+        }
+      },
+      {
+        "name": "S3",
+        "code": 3,
+        "fu_sel": {
+          "add0": {
+            "a": null,
+            "b": null
+          },
+          "sub0": {
+            "a": null,
+            "b": null
+          },
+          "mul0": {
+            "a": 0,
+            "b": 0
+          }
+        },
+        "reg_we": {
+          "r0": 0,
+          "r1": 1,
+          "r2": 0,
+          "r3": 0
+        },
+        "reg_sel": {
+          "r0": null,
+          "r1": 1,
+          "r2": null,
+          "r3": null
+        },
+        "done": 0,
+        "next": {
+          "default": "DONE"
+        }
+      },
+      {
+        "name": "DONE",
+        "code": 4,
+        "fu_sel": {
+          "add0": {
+            "a": null,
+            "b": null
+          },
+          "sub0": {
+            "a": null,
+            "b": null
+          },
+          "mul0": {
+            "a": null,
+            "b": null
+          }
+        },
+        "reg_we": {
+          "r0": 0,
+          "r1": 0,
+          "r2": 0,
+          "r3": 0
+        },
+        "reg_sel": {
+          "r0": null,
+          "r1": null,
+          "r2": null,
+          "r3": null
+        },
+        "done": 1,
+        "next": {
+          "start": "IDLE",
+          "default": "DONE"
+        }
+      }
+    ]
+  }
+}

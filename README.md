@@ -27,12 +27,35 @@ Q = B * Z
 
 ## Commands
 [TO DO]
+```
+py make_ssa.py <testdata/filename.txt> #converts provided equations to SSA format
+py make_ssa.py <testdata/filename.txt> -mf #same as above, additionally creates file with resulting SSA equations
+
+py dag.py [TO DO; need to populate and comment] #COMMENT TO DO
+
+py vadd.py <number larger than 0, using numeric values> #creates verilog adder for <number>-wide inputs
+py vsub.py <number larger than 0, using numeric values> #creates verilog subtracter for <number>-wide inputs
+py vmult.py <number larger than 0, using numeric values> #creates verilog multiplier for <number>-wide inputs
+```
 
 ## Architecture
 [TO DO]
 
 ## Folder Structure
-[TO DO]
+[TO COMPLETE]
+
+```
+bu-ec551-proj2/
+├── EC551_Program2_Rev2.pdf project specifications document by Prof Densmore
+├── make_ssa.py             parses equations text file, converts to SSA format, optionally creates SSA output
+├── dag.py                  [TO DESCRIBE]
+├── verilog_gen/            basic block Verilog generation files (v*.py), default verilog block files (v*.v), program-created verilog files (iv*.v)
+├── fpga/                   hand-written board files (same for every design)
+│   ├── top_nexys4ddr.v     wrapper module "top", Digilent Nexys 4 DDR
+│   └── nexys4ddr.xdc       pin constraints, Digilent Nexys 4 DDR
+├── testdata/               example input files (.txt)
+└── output/                 generated .txt files of intermediate SSA equations.
+```
 
 ## Running on the FPGA
 *Code reused/adapted from https://github.com/ddsva1/bu-ec551-proj1*
@@ -46,24 +69,22 @@ Q = B * Z
 
 ## Testing
 [TO DO]
-
-### Testdata Usage
-[TO DO]
+[TO DO ALSO: Add test 20 lines long, 1 line long, max variables, min variables]
 
 | Case Tested | Command |
 |---|---|
 |Provided Case|provided.txt|
-|Minimal Cases|1.txt|
-|Maximal Cases||
-
-### xTestdata Usage
-[TO DO]
-
-|Common Errors|Error Detection Proof|Handling Method|
-|---|---|---|
-|Equations entered without spaces|x1.blif|Produces correct outputs|
-
+|Minimal Cases|1.txt, 2.txt|
+|Maximal Cases|3.txt, 4.txt, 5.txt|
+|Error Handling Cases|x1.txt|
 
 
 ## AI Usage
-[TO DO]
+[TO COMPLETE]
+
+- No AI used for make_ssa.py
+- No AI used for test input data creation
+- No AI used for verilog-gen folder
+- No AI used for README file
+
+- AI used for fpga folder (code adapted from project 1)

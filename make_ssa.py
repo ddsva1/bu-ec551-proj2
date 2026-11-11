@@ -3,6 +3,7 @@ import sys
 import re
 from pathlib import Path
 
+
 #help functions
 
 def get_file_equ(filename):
@@ -88,4 +89,6 @@ def main():
     else:
         print("No -mf tag, not making SSA output file")
     print("-----------------------------------------")
-main()
+
+if __name__ == "__main__":
+    main()
