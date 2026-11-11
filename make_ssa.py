@@ -91,6 +91,8 @@ def main():
     else:
         print("No -mf tag, not making SSA output file")
     print("-----------------------------------------")
+    print("Datapath")
+    print("-----------------------------------------")
     make_v(ssa)
 
 if __name__ == "__main__":
