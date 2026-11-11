@@ -1,0 +1,49 @@
+Schedule mode : asap
+Latency       : 20 control steps
+Limits        : none
+
+Step 1:
+    op0   A_1 = A_0 * A_0
+Step 2:
+    op1   A_2 = A_1 * A_1
+Step 3:
+    op2   A_3 = A_2 * A_2
+Step 4:
+    op3   A_4 = A_3 * A_3
+Step 5:
+    op4   A_5 = A_4 * A_4
+Step 6:
+    op5   A_6 = A_5 * A_5
+Step 7:
+    op6   A_7 = A_6 * A_6
+Step 8:
+    op7   A_8 = A_7 * A_7
+Step 9:
+    op8   A_9 = A_8 * A_8
+Step 10:
+    op9   A_10 = A_9 * A_9
+Step 11:
+    op10  A_11 = A_10 * A_10
+Step 12:
+    op11  A_12 = A_11 * A_11
+Step 13:
+    op12  A_13 = A_12 * A_12
+Step 14:
+    op13  A_14 = A_13 * A_13
+Step 15:
+    op14  A_15 = A_14 * A_14
+Step 16:
+    op15  A_16 = A_15 * A_15
+Step 17:
+    op16  A_17 = A_16 * A_16
+Step 18:
+    op17  A_18 = A_17 * A_17
+Step 19:
+    op18  A_19 = A_18 * A_18
+Step 20:
+    op19  A_20 = A_19 * A_19
+
+Functional units required:
+  adder      : 0
+  subtractor : 0
+  multiplier : 1

@@ -1,0 +1,30 @@
+Schedule mode : asap
+Latency       : 1 control steps
+Limits        : none
+
+Step 1:
+    op0   A_0 = B_0 + C_0
+    op1   D_0 = E_0 - F_0
+    op2   G_0 = H_0 + I_0
+    op3   J_0 = K_0 - L_0
+    op4   M_0 = N_0 + O_0
+    op5   P_0 = Q_0 - R_0
+    op6   S_0 = T_0 + U_0
+    op7   V_0 = W_0 - X_0
+    op8   Y_0 = Z_0 + A1_0
+    op9   A2_0 = A3_0 - A4_0
+    op10  A5_0 = A6_0 + A7_0
+    op11  A8_0 = A9_0 - A10_0
+    op12  A_0_0 = A_1_0 + A_2_0
+    op13  A_3_0 = A_4_0 - A_5_0
+    op14  AAAAAA0_0 = AAAAAA1_0 + AAAAAA2_0
+    op15  AAAAAA3_0 = AAAAAA4_0 - AAAAAA5_0
+    op16  A_E_0 = AA_E_0 + A_EE_0
+    op17  AB1_0 = ABB2_0 - AC1_0
+    op18  AD1_0 = AE2_0 + AF3_0
+    op19  AG3_0 = AG2_0 - AG1_0
+
+Functional units required:
+  adder      : 10
+  subtractor : 10
+  multiplier : 0

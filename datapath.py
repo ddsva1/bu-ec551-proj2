@@ -3,10 +3,9 @@ Datapath and sequencer (control FSM) generation.
 
 """
 
-import json
 from dataclasses import dataclass
 
-from dag import OP_TYPES, FU_MODULE, COMMUTATIVE, HLSError, base_name, resource_usage
+from dag import OP_TYPES, COMMUTATIVE, HLSError, resource_usage
 
 
 def sel_width(n_sources):
@@ -25,6 +24,7 @@ class Datapath:
     reg_src: dict                # reg -> [src...]
     states: list                 # control words, see build_controller()
     output_regs: dict            # output value -> reg
+    binding: dict                # op id -> {"fu", "src_a", "src_b", "dest_reg"}
 
 
 # --------------------------------------------------------------------------
@@ -175,55 +175,5 @@ def build_datapath(dag, sched, width=8):
     fus, fu_type, binding, fu_port_src, reg_src = bind(dag, sched, values, registers)
     states = build_controller(dag, sched, values, registers, binding, fu_type, fu_port_src, reg_src)
     output_regs = {v: values[v]["reg"] for v in dag.outputs}
-    return Datapath(width, fus, fu_type, values, registers, fu_port_src, reg_src, states, output_regs)
-
-
-# --------------------------------------------------------------------------
-# manifest for the Verilog generator
-# --------------------------------------------------------------------------
-
-def src_to_json(src):
-    kind, x = src
-    if kind == "reg":
-        return {"kind": "reg", "name": x}
-    if kind == "const":
-        return {"kind": "const", "value": x}
-    if kind == "in":
-        return {"kind": "input", "name": x, "port": f"in_{base_name(x)}"}
-    return {"kind": "fu", "name": x}
-
-
-def build_manifest(dp):
-    """Everything the Verilog generator needs, as plain JSON data."""
-
-    def mux(srcs, sel_name):
-        return {"sources": [src_to_json(s) for s in srcs],
-                "sel_signal": sel_name if len(srcs) > 1 else None,
-                "sel_width": sel_width(len(srcs))}
-
-    return {
-        "width": dp.width,
-        "fu_interface": {t: {"module": FU_MODULE[t], "parameter": "W",
-                             "inputs": ["a", "b"], "output": "y"} for t in OP_TYPES},
-        "inputs": [{"value": v, "port": f"in_{base_name(v)}", "reg": dp.values[v]["reg"]}
-                   for v, s in dp.values.items() if s["birth"] == 0],
-        "outputs": [{"value": v, "port": f"out_{base_name(v)}", "reg": r}
-                    for v, r in dp.output_regs.items()],
-        "fus": [{"name": fu, "type": dp.fu_type[fu], "module": FU_MODULE[dp.fu_type[fu]],
-                 "port_a": mux(dp.fu_port_src[fu]["a"], f"sel_{fu}_a"),
-                 "port_b": mux(dp.fu_port_src[fu]["b"], f"sel_{fu}_b"),
-                 "output": f"{fu}_y"} for fu in dp.fu_type],
-        "registers": [{"name": r, "we_signal": f"we_{r}", **mux(dp.reg_src[r], f"sel_{r}")}
-                      for r in dp.registers],
-        "fsm": {
-            "state_width": sel_width(len(dp.states)),
-            "reset_state": "IDLE",
-            "states": dp.states,
-        },
-    }
-
-
-def write_manifest_json(manifest, path):
-    with open(path, "w") as f:
-        json.dump(manifest, f, indent=2)
-        f.write("\n")
+    return Datapath(width, fus, fu_type, values, registers, fu_port_src, reg_src, states,
+                    output_regs, binding)

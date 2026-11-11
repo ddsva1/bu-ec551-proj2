@@ -1,0 +1,11 @@
+Schedule mode : asap
+Latency       : 1 control steps
+Limits        : none
+
+Step 1:
+    op0   A_0 = B_0 + C_0
+
+Functional units required:
+  adder      : 1
+  subtractor : 0
+  multiplier : 0
