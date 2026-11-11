@@ -192,12 +192,10 @@ This generates the Verilog, runs synthesis, implementation and bitstream generat
 
 
 ## AI Usage
-[TO COMPLETE]
 
 - No AI used for make_ssa.py seed code
 - No AI used for make_v.py seed code
 - No AI used for test input data creation
-- No AI used for README file's summary, input format, folder structure diagram, testing, AI usage.
 
-- AI used for fpga folder
-- AI used to refactor code, including seed code from above
+- AI used for Vivado compilation and FPGA deployment code
+- AI used to refactor code, integrate between modules, and document code
