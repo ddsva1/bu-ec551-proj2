@@ -27,34 +27,37 @@ Q = B * Z
 
 ## Commands
 [TO DO]
-```
-py make_ssa.py <testdata/filename.txt> #converts provided equations to SSA format
-py make_ssa.py <testdata/filename.txt> -mf #same as above, additionally creates file with resulting SSA equations
-
-py dag.py [TO DO; need to populate and comment] #COMMENT TO DO
-
-py vadd.py <number larger than 0, using numeric values> #creates verilog adder for <number>-wide inputs
-py vsub.py <number larger than 0, using numeric values> #creates verilog subtracter for <number>-wide inputs
-py vmult.py <number larger than 0, using numeric values> #creates verilog multiplier for <number>-wide inputs
-```
 
 ## Architecture
 [TO DO]
 
 ## Folder Structure
-[TO COMPLETE]
 
 ```
 bu-ec551-proj2/
-├── EC551_Program2_Rev2.pdf project specifications document by Prof Densmore
-├── make_ssa.py             parses equations text file, converts to SSA format, optionally creates SSA output
-├── dag.py                  [TO DESCRIBE]
-├── verilog_gen/            basic block Verilog generation files (v*.py), default verilog block files (v*.v), program-created verilog files (iv*.v)
-├── fpga/                   hand-written board files (same for every design)
-│   ├── top_nexys4ddr.v     wrapper module "top", Digilent Nexys 4 DDR
-│   └── nexys4ddr.xdc       pin constraints, Digilent Nexys 4 DDR
-├── testdata/               example input files (.txt)
-└── output/                 generated .txt files of intermediate SSA equations.
+├── EC551_Program2_Rev2.pdf   Project specifications document by Prof Densmore
+├── DEMO                      Contains files used for/during demo
+│   ├── 30-MINUTE-DEMO-PLAN   Required submission document describing what we plan to show
+│   └── scans.pdf             Scanned copies of prepped hand-drawn diagrams (proof of correctness)
+├── hls.py                    High-level main function, calls all others
+├── make_ssa.py               parses equations text file, converts to SSA format, optionally creates SSA output
+├── dag.py                    Creates DAG/Datapath from SSA equations
+├── datapath.py               Creates Datapath using DAG, SSA
+├── verilog_gen/              basic block Verilog generation files (v*.py), default verilog block files (v*.v), program-created verilog files (iv*.v)
+│   └── verilog outputs       Folders containing verilog output files used to demonstrate and test outputs
+│       ├── hls_core.v
+│       ├── hls_top.v
+│       └── testbench.v
+├── verilog_mod/
+│   ├── adder.v               basic verilog block adder
+│   ├── multiplier.v          basic verilog block multiplier
+│   ├── step_pulse.v          basic verilog block step-pulse (for clock step-through)
+│   └── subtractor.v          basic verilog block subtractor
+├── fpga/                     hand-written board files (same for every design)
+│   ├── top_nexys4ddr.v       wrapper module "top", Digilent Nexys 4 DDR
+│   └── nexys4ddr.xdc         pin constraints, Digilent Nexys 4 DDR
+├── testdata/                 example input files (.txt)
+└── output/                   generated .txt files of intermediate SSA equations.
 ```
 
 ## Running on the FPGA
@@ -85,7 +88,7 @@ bu-ec551-proj2/
 - No AI used for make_ssa.py seed code
 - No AI used for make_v.py seed code
 - No AI used for test input data creation
-- No AI used for README file
+- No AI used for README file's summary, input format, folder structure diagram, testing, AI usage.
 
-- AI used for fpga folder (code adapted from project 1)
+- AI used for fpga folder
 - AI used to refactor code, including seed code from above
