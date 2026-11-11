@@ -1,4 +1,4 @@
-Schedule mode : asap
+Schedule mode : custom
 Latency       : 3 control steps
 Limits        : none
 
